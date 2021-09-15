@@ -7,9 +7,9 @@ resource "helm_release" "istio_base" {
   timeout = 120
   cleanup_on_fail = true
   force_update    = true
-  namespace       = kubernetes_namespace.istio_namespace.metadata[0].name
+  namespace       = var.istio_namespace
 
-  depends_on = [kubernetes_namespace.istio_namespace]
+  create_namespace = true
 }
 
 resource "helm_release" "istiod" {
@@ -21,9 +21,11 @@ resource "helm_release" "istiod" {
   timeout = 120
   cleanup_on_fail = true
   force_update    = true
-  namespace       = kubernetes_namespace.istio_namespace.metadata[0].name
+  namespace       = var.istio_namespace
 
-  depends_on = [kubernetes_namespace.istio_namespace, helm_release.istio_base]
+  create_namespace = true
+
+  depends_on = [helm_release.istio_base]
 }
 
 resource "helm_release" "istio_ingress" {
@@ -35,13 +37,9 @@ resource "helm_release" "istio_ingress" {
   timeout = 120
   cleanup_on_fail = true
   force_update    = true
-  namespace       = kubernetes_namespace.istio_namespace.metadata[0].name
+  namespace       = var.istio_namespace
 
-  depends_on = [kubernetes_namespace.istio_namespace, helm_release.istiod]
-}
+  create_namespace = true
 
-resource "kubernetes_namespace" "istio_namespace" {
-  metadata {
-    name = var.istio_namespace
-  }
+  depends_on = [helm_release.istiod]
 }
