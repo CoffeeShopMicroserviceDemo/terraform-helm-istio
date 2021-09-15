@@ -35,7 +35,7 @@ resource "helm_release" "istio_ingress" {
   timeout = 120
   cleanup_on_fail = true
   force_update    = true
-  namespace       = kubernetes_namespace.istio_namespace.metadata.name
+  namespace       = kubernetes_namespace.istio_namespace.metadata[0].name
 
   depends_on = [kubernetes_namespace.istio_namespace, helm_release.istiod]
 }
