@@ -3,5 +3,5 @@ data "digitalocean_kubernetes_cluster" "k8s" {
 }
 
 data "digitalocean_project" "do_project" {
-  name = var.do_project_name
+  id = var.do_project_id
 }
