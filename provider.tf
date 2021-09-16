@@ -9,6 +9,3 @@
 #provider "digitalocean" {
 #  token = var.do_token
 #}
-
-#hi
-#hi 2
